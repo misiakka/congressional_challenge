@@ -1,7 +1,9 @@
 import streamlit as st
 
-st.title("Congressional App Challenge")
-st.write("Our app is working!")
+st.title("FoodRescue")
 
-if st.button("Click me"):
-    st.success("It works!")
+food = st.text_input("Food item")
+quantity = st.number_input("Quantity", min_value=1)
+
+if st.button("Submit Donation"):
+    st.success("Donation submitted!")
