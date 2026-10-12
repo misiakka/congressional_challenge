@@ -5,7 +5,7 @@ from data.donations import available_donations
 def render():
     # --------------------------------------------------
 
-    st.title("Find Available Food 🤝")
+    st.title("Find Available Food")
     st.markdown(
         '<p class="section-caption">'
         'Explore available donations and find food that fits your organization’s needs.'

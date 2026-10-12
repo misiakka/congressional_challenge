@@ -6,7 +6,7 @@ from datetime import datetime
 def render():
     # --------------------------------------------------
 
-    st.title("Donate Surplus Food 🌿")
+    st.title("Donate Surplus Food")
     st.markdown(
         '<p class="section-caption">'
         'Help good food reach people who need it instead of going to waste.'
