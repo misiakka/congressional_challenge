@@ -1,20 +1,28 @@
 import streamlit as st
 
-PAGES = ["Home", "Donate Food", "Find Food", "Sign Up"]
+PAGES = ("Home", "Donate Food", "Find Food")
+
+
+def go_to(page):
+    """Use a non-widget session key for routing."""
+    st.session_state.current_page = page
+    st.rerun()
 
 
 def render_sidebar():
-    # Home-page buttons request navigation before the radio widget is created.
-    requested = st.session_state.pop("home_navigation", None)
-    if requested in PAGES:
-        st.session_state.current_page = requested
-
     with st.sidebar:
-        st.markdown("# FoodRescue")
+        st.markdown('<div class="sidebar-brand">FoodRescue</div>', unsafe_allow_html=True)
         st.caption("Good food. Better communities.")
         st.divider()
-
-        page = st.radio("Navigation", PAGES, key="current_page")
+        st.markdown('<p class="sidebar-label">EXPLORE</p>', unsafe_allow_html=True)
+        for page in PAGES:
+            selected = st.session_state.current_page == page
+            if st.button(page, key=f"nav_{page}", use_container_width=True,
+                         type="primary" if selected else "secondary"):
+                go_to(page)
         st.divider()
-        st.caption("FoodRescue • Demo Prototype")
-    return page
+        if st.session_state.get("logged_in"):
+            st.caption(f"Signed in as {st.session_state.get('user_name', 'Member')}")
+        else:
+            st.caption("Sign up to join the community")
+        st.caption("FoodRescue · Prototype")

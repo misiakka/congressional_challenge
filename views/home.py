@@ -1,4 +1,5 @@
 import streamlit as st
+from components.navigation import go_to
 
 
 def render():
@@ -20,8 +21,7 @@ def render():
         )
         if not st.session_state.get("logged_in", False):
             if st.button("Sign Up", key="mission_signup", type="primary"):
-                st.session_state.home_navigation = "Sign Up"
-                st.rerun()
+                go_to("Sign Up")
         else:
             st.caption("Welcome to the FoodRescue community.")
 

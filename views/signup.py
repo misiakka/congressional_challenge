@@ -1,51 +1,92 @@
+
 import re
 import streamlit as st
+from components.navigation import go_to
+from data.accounts import create_account
 
 
 def show_signup():
+
     st.markdown(
-        """<div class="hero-card">
+        """
+        <div class="hero-card">
             <h1>Join FoodRescue</h1>
-            <p>Create a demo profile and help good food find a new home.</p>
-        </div>""",
-        unsafe_allow_html=True,
+            <p>Create an account and help good food find a new home.</p>
+        </div>
+        """,
+        unsafe_allow_html=True
     )
 
     _, center, _ = st.columns([1, 2, 1])
+
     with center:
+
         if st.session_state.get("logged_in", False):
-            st.success("You're already using a demo profile.")
-            if st.button("Go to Home", use_container_width=True):
-                st.session_state.current_page = "Home"
-                st.rerun()
+            st.success("You are already logged in!")
+
+            if st.button("Go Home", use_container_width=True):
+                go_to("Home")
+
             return
 
-        st.subheader("Create your demo profile")
-        st.caption("No password is needed for this prototype. This is not a real account.")
+        st.subheader("Create an Account")
+
         with st.form("signup_form"):
-            name = st.text_input("Full Name", placeholder="Your name")
-            email = st.text_input("Email Address", placeholder="demo@example.com")
+
+            name = st.text_input("Full Name")
+            email = st.text_input("Email Address")
+
+            password = st.text_input(
+                "Password",
+                type="password"
+            )
+
+            confirm_password = st.text_input(
+                "Confirm Password",
+                type="password"
+            )
+
             account_type = st.selectbox(
                 "I am a...",
-                ["Business / Food Donor", "Food Bank / Community Organization"],
+                [
+                    "Business / Food Donor",
+                    "Food Bank / Community Organization"
+                ]
             )
-            agreed = st.checkbox("I understand this is a demo profile, not a real account")
-            submitted = st.form_submit_button("Join FoodRescue", use_container_width=True)
+
+            submitted = st.form_submit_button(
+                "Create Account",
+                use_container_width=True,
+                type="primary"
+            )
 
         if submitted:
-            if not name.strip():
-                st.error("Please enter your name.")
-            elif not re.fullmatch(r"[^@\s]+@[^@\s]+\.[^@\s]+", email.strip()):
-                st.error("Please enter a valid email format.")
-            elif not agreed:
-                st.error("Please confirm that you understand this is a demo.")
-            else:
-                # Only temporary demo display information is kept in this browser session.
-                # No password, database account, or authentication is created.
-                st.session_state.logged_in = True
-                st.session_state.user_name = name.strip()
-                st.session_state.account_type = account_type
-                st.session_state.current_page = "Home"
-                st.rerun()
 
-        st.caption("Please use test information. Profiles disappear when the session ends.")
+            if not re.fullmatch(
+                r"[^@\s]+@[^@\s]+\.[^@\s]+",
+                email.strip()
+            ):
+                st.error("Please enter a valid email address.")
+
+            elif password != confirm_password:
+                st.error("Passwords do not match.")
+
+            else:
+                success, message = create_account(
+                    name,
+                    email,
+                    password,
+                    account_type
+                )
+
+                if success:
+                    go_to("Log In")
+                else:
+                    st.error(message)
+
+        st.divider()
+
+        st.write("Already have an account?")
+
+        if st.button("Log In", use_container_width=True):
+            go_to("Log In")
