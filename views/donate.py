@@ -1,168 +1,52 @@
+"""Food posting and donor-side management."""
 import streamlit as st
-from components.cards import render_donation_card, safe_text
-from data.donations import available_donations
-from datetime import datetime
+from components.navigation import go_to
+from components.cards import render_donation_card
+from data.database import CATEGORIES, DONOR, add_donation, cancel_donation, list_donations
+
 
 def render():
-    # --------------------------------------------------
+    st.title('Donate food')
+    st.caption('Have extra food? Share what is available and when it can be picked up.')
+    user = st.session_state.user
+    if not user:
+        st.info('Create an account or log in as a food donor to post a listing.')
+        if st.button('Sign up to donate'):
+            go_to('Account')
+        return
+    if user['role'] != DONOR:
+        st.warning('Your account is set up to receive donations. Only donor accounts can post food.')
+        return
 
-    st.title("Donate Surplus Food")
-    st.markdown(
-        '<p class="section-caption">'
-        'Help good food reach people who need it instead of going to waste.'
-        '</p>',
-        unsafe_allow_html=True,
-    )
-
-
-    st.markdown(
-        """
-        <div class="info-card">
-            <p>
-                <strong>For food businesses:</strong>
-                Add your organization and food details below.
-                Please list only food that is safe and appropriate to donate.
-            </p>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-
-    with st.form("donation_form", clear_on_submit=True):
-
-
-        st.markdown("### Business information")
-
-
-        business = st.text_input(
-            "Business or organization name *",
-            placeholder="e.g., Green Leaf Cafe",
-        )
-
-
-        location = st.text_input(
-            "Pickup location *",
-            placeholder="e.g., Manhattan, NY",
-        )
-
-
-        st.markdown("### Food donation details")
-
-
-        food = st.text_input(
-            "Food items *",
-            placeholder="e.g., Fresh sandwiches and salads",
-        )
-
-
-        col1, col2 = st.columns(2)
-
-
-        with col1:
-            quantity = st.number_input(
-                "Quantity of portions/items *",
-                min_value=1,
-                max_value=100000,
-                value=10,
-                step=1,
-            )
-
-
-        with col2:
-            category = st.selectbox(
-                "Food category *",
-                [
-                    "Prepared Meals",
-                    "Produce",
-                    "Bakery",
-                    "Dairy",
-                    "Packaged Food",
-                    "Other",
-                ],
-            )
-
-
-        pickup = st.text_input(
-            "Pickup time *",
-            placeholder="e.g., Today, 6:00 PM",
-        )
-
-
-        notes = st.text_area(
-            "Additional details",
-            placeholder=(
-                "Add storage instructions, packaging details, "
-                "allergen information, or other pickup instructions."
-            ),
-        )
-
-
-        submitted = st.form_submit_button(
-            "Submit Food Donation",
-            use_container_width=True,
-        )
-
-
-        if submitted:
-            if not business.strip():
-                st.error("Please enter your business or organization name.")
-            elif not location.strip():
-                st.error("Please enter the pickup location.")
-            elif not food.strip():
-                st.error("Please enter the food items.")
-            elif not pickup.strip():
-                st.error("Please enter the pickup time.")
-            else:
-                new_donation = {
-                    "id": st.session_state.next_donation_id,
-                    "business": business.strip(),
-                    "food": food.strip(),
-                    "quantity": int(quantity),
-                    "category": category,
-                    "pickup": pickup.strip(),
-                    "location": location.strip(),
-                    "notes": notes.strip(),
-                    "status": "Available",
-                    "organization": "",
-                    "created_at": datetime.now().strftime("%Y-%m-%d"),
-                }
-
-
-                st.session_state.donations.insert(0, new_donation)
-                st.session_state.next_donation_id += 1
-
-
-                st.success(
-                    "Your donation has been added to the available food listings!"
-                )
-                st.info(
-                    "This prototype stores donations in the current "
-                    "Streamlit session. It does not yet publish them to "
-                    "a permanent database."
-                )
-
+    with st.form('donation_form', clear_on_submit=True):
+        st.subheader('New donation')
+        business = st.text_input('Business name *', max_chars=100)
+        food = st.text_input('What food is available? *', placeholder='e.g. 20 fresh sandwiches', max_chars=150)
+        one, two = st.columns(2)
+        with one:
+            quantity = st.number_input('Number of items or portions *', min_value=1, max_value=100000, value=10)
+            location = st.text_input('Pickup neighborhood / location *', max_chars=150)
+        with two:
+            category = st.selectbox('Category', CATEGORIES)
+            pickup = st.text_input('Pickup date and time *', placeholder='e.g. Oct 20, 3–5 PM', max_chars=120)
+        notes = st.text_area('Notes (storage, allergens, packaging)', max_chars=1200)
+        submitted = st.form_submit_button('Post donation', use_container_width=True)
+    if submitted:
+        try:
+            add_donation(user['id'], business, food, quantity, category, pickup, location, notes)
+            st.success('Your donation is live! Community organizations can now find it.')
+        except ValueError as error:
+            st.error(str(error))
 
     st.divider()
-
-
-    st.markdown("## Your available donations")
-
-
-    all_donations = [
-        donation
-        for donation in st.session_state.donations
-        if donation["status"] == "Available"
-    ]
-
-
-    if all_donations:
-        for donation in all_donations:
-            render_donation_card(donation)
-    else:
-        st.info("No available donations have been listed yet.")
-
-
-
-
-    #
+    st.subheader('Your donations')
+    donations = list_donations(donor_id=user['id'])
+    if not donations:
+        st.info('You have not posted any donations yet.')
+    for donation in donations:
+        render_donation_card(donation)
+        if donation['status'] == 'Claimed':
+            st.caption(f"Claimed by: {donation['claimant_name']}")
+        if donation['status'] == 'Available' and st.button('Cancel listing', key=f"cancel_{donation['id']}"):
+            if cancel_donation(donation['id'], user['id']):
+                st.rerun()

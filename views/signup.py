@@ -1,92 +1,58 @@
-
+"""Actual account registration and login, backed by SQLite."""
 import re
 import streamlit as st
 from components.navigation import go_to
-from data.accounts import create_account
+from data.database import DONOR, RECEIVER, authenticate, create_user
 
 
-def show_signup():
+def render():
+    st.title('Your FoodRescue account')
+    st.caption('One account for donating or receiving food.')
+    if st.session_state.user:
+        user = st.session_state.user
+        st.success(f"You're signed in as {user['name']}.")
+        st.write(f"Account type: {user['role']}")
+        if st.button('View My Activity'):
+            go_to('My Activity')
+        return
 
-    st.markdown(
-        """
-        <div class="hero-card">
-            <h1>Join FoodRescue</h1>
-            <p>Create an account and help good food find a new home.</p>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-    _, center, _ = st.columns([1, 2, 1])
-
-    with center:
-
-        if st.session_state.get("logged_in", False):
-            st.success("You are already logged in!")
-
-            if st.button("Go Home", use_container_width=True):
-                go_to("Home")
-
-            return
-
-        st.subheader("Create an Account")
-
-        with st.form("signup_form"):
-
-            name = st.text_input("Full Name")
-            email = st.text_input("Email Address")
-
-            password = st.text_input(
-                "Password",
-                type="password"
-            )
-
-            confirm_password = st.text_input(
-                "Confirm Password",
-                type="password"
-            )
-
-            account_type = st.selectbox(
-                "I am a...",
-                [
-                    "Business / Food Donor",
-                    "Food Bank / Community Organization"
-                ]
-            )
-
-            submitted = st.form_submit_button(
-                "Create Account",
-                use_container_width=True,
-                type="primary"
-            )
-
-        if submitted:
-
-            if not re.fullmatch(
-                r"[^@\s]+@[^@\s]+\.[^@\s]+",
-                email.strip()
-            ):
-                st.error("Please enter a valid email address.")
-
-            elif password != confirm_password:
-                st.error("Passwords do not match.")
-
-            else:
-                success, message = create_account(
-                    name,
-                    email,
-                    password,
-                    account_type
-                )
-
-                if success:
-                    go_to("Log In")
+    _, middle, _ = st.columns([1, 2, 1])
+    with middle:
+        create_tab, login_tab = st.tabs(['Create account', 'Log in'])
+        with create_tab:
+            with st.form('create_account'):
+                name = st.text_input('Full name', max_chars=100)
+                email = st.text_input('Email address', max_chars=254)
+                role = st.selectbox('I am a...', [DONOR, RECEIVER])
+                password = st.text_input('Password (12+ characters)', type='password')
+                confirm = st.text_input('Confirm password', type='password')
+                submitted = st.form_submit_button('Create account', use_container_width=True)
+            if submitted:
+                if not name.strip() or not re.fullmatch(r'[^@\s]+@[^@\s]+\.[^@\s]+', email.strip()):
+                    st.error('Enter your name and a valid email address.')
+                elif password != confirm:
+                    st.error('Your passwords do not match.')
                 else:
-                    st.error(message)
+                    try:
+                        st.session_state.user = create_user(name, email, password, role)
+                        go_to('My Activity')
+                    except ValueError as error:
+                        st.error(str(error))
+        with login_tab:
+            with st.form('login_account'):
+                email = st.text_input('Email', key='login_email')
+                password = st.text_input('Password', type='password', key='login_password')
+                submitted = st.form_submit_button('Log in', use_container_width=True)
+            if submitted:
+                user = authenticate(email, password)
+                if user:
+                    st.session_state.user = user
+                    go_to('My Activity')
+                else:
+                    st.error('Email or password is incorrect.')
+    st.caption('Prototype notice: please use test information, not sensitive personal details.')
 
-        st.divider()
 
-        st.write("Already have an account?")
-
-        if st.button("Log In", use_container_width=True):
-            go_to("Log In")
+# Backward-compatible name used in earlier versions.
+def show_signup():
+    render()

@@ -1,10 +1,9 @@
-
+"""A mission-led introduction to FoodRescue."""
 import streamlit as st
 from components.navigation import go_to
 
 
 def render():
-    # HERO: TEXT ON THE LEFT, IMAGE ON THE RIGHT
     left, right = st.columns([1.1, 0.9], gap="large", vertical_alignment="center")
 
     with left:
@@ -27,17 +26,15 @@ def render():
             unsafe_allow_html=True,
         )
 
-        
-        if not st.session_state.get("logged_in", False):
+        if not st.session_state.user:
             if st.button(
                 "Join FoodRescue →",
                 key="mission_signup",
                 type="primary",
             ):
-                go_to("Sign Up")
+                go_to("Account")
         else:
             st.success("Welcome to the FoodRescue community!")
-
 
     with right:
         st.image(
@@ -45,7 +42,6 @@ def render():
             use_container_width=True,
         )
 
-    # INTRODUCTION TO THE FEATURES
     st.markdown(
         """
         <div class="section-heading">
@@ -106,7 +102,6 @@ def render():
             unsafe_allow_html=True,
         )
 
-    # HOW IT WORKS
     st.markdown(
         """
         <div class="section-heading how-it-works-heading">
@@ -165,7 +160,6 @@ def render():
             unsafe_allow_html=True,
         )
 
-    # CLOSING CALL TO ACTION
     st.markdown(
         """
         <div class="closing-banner">
@@ -180,14 +174,13 @@ def render():
         unsafe_allow_html=True,
     )
 
-    if not st.session_state.get("logged_in", False):
+    if not st.session_state.user:
         if st.button(
             "Get Started →",
             key="closing_signup",
             type="primary",
         ):
-            st.session_state.home_navigation = "Sign Up"
-            st.rerun()
+            go_to("Account")
 
     st.caption(
         "FoodRescue is a demonstration prototype. "

@@ -1,298 +1,236 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
-
-
-    .stApp {
-        background-color: #FFFFFF;
-        color: #263D2A;
-        font-family: 'DM Sans', sans-serif;
-    }
-
-
-    h1, h2, h3 {
-        color: #263D2A;
-        font-weight: 700;
-    }
-
-
-    p, label {
-        color: #354A37;
-    }
-
-
-    [data-testid="stSidebar"] {
-        background-color: #F6F8F5;
-    }
-
-
-    [data-testid="stSidebar"] h1,
-    [data-testid="stSidebar"] h2,
-    [data-testid="stSidebar"] h3 {
-        color: #263D2A;
-    }
-
-
-    .hero-card {
-        background: linear-gradient(135deg, #355E3B, #263D2A);
-        color: white;
-        padding: 42px 36px;
-        border-radius: 6px;
-        margin-bottom: 28px;
-    }
-
-
-    .hero-card h1 {
-        color: white;
-        font-size: 42px;
-        margin-bottom: 12px;
-    }
-
-
-    .hero-card p {
-        color: #F4F6ED;
-        font-size: 17px;
-        line-height: 1.7;
-    }
-
-
-    .feature-card {
-        background-color: #F6F8F5;
-        padding: 26px;
-        border-radius: 6px;
-        min-height: 185px;
-        margin-bottom: 18px;
-        border: 1px solid #D3DFC9;
-    }
-
-
-    .feature-card h3 {
-        margin-top: 0;
-        color: #263D2A;
-    }
-
-
-    .feature-card p {
-        line-height: 1.65;
-    }
-
-
-    .listing-card {
-        background-color: #F6F8F5;
-        padding: 24px;
-        border-radius: 6px;
-        margin-bottom: 18px;
-        border: 1px solid #D3DFC9;
-    }
-
-
-    .listing-card h3 {
-        margin-top: 0;
-        margin-bottom: 10px;
-    }
-
-
-    .info-card {
-        background-color: #F7F9F6;
-        border-left: 5px solid #78966B;
-        padding: 22px;
-        border-radius: 6px;
-        margin-bottom: 15px;
-    }
-
-
-    .info-card p {
-        margin-bottom: 0;
-    }
-
-
-    .small-label {
-        color: #526B51;
-        font-size: 13px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.6px;
-    }
-
-
-    .status-badge {
-        display: inline-block;
-        background-color: #D3E4CE;
-        color: #263D2A;
-        padding: 6px 12px;
-        border-radius: 6px;
-        font-size: 12px;
-        font-weight: 700;
-    }
-
-
-    .section-caption {
-        color: #526B51;
-        font-size: 16px;
-        margin-top: -8px;
-        margin-bottom: 22px;
-    }
-
-
-    .stButton > button {
-        background-color: #355E3B;
-        color: white;
-        border: 1px solid #355E3B;
-        border-radius: 6px;
-        padding: 12px 20px;
-        font-weight: 600;
-        transition: background-color 0.2s ease;
-    }
-
-
-    .stButton > button:hover {
-        background-color: #263D2A;
-        color: white;
-        border-color: #263D2A;
-    }
-
-
-    .stButton > button:focus {
-        color: white;
-        border-color: #78966B;
-        box-shadow: 0 0 0 2px #D3E4CE;
-    }
-
-
-    .stTextInput input,
-    .stTextArea textarea,
-    .stNumberInput input,
-    .stSelectbox div[data-baseweb="select"] {
-        border-radius: 6px;
-    }
-
-
-    div[data-testid="stMetric"] {
-        background-color: #F6F8F5;
-        padding: 22px;
-        border-radius: 6px;
-        border: 1px solid #D3DFC9;
-    }
-
-
-    div[data-testid="stMetricLabel"] {
-        color: #526B51;
-    }
-
-
-    div[data-testid="stMetricValue"] {
-        color: #263D2A;
-    }
-
-
-    hr {
-        border-color: #D3DFC9;
-    }
-
-
-    .footer {
-        text-align: center;
-        color: #526B51;
-        padding: 25px 0 10px 0;
-        font-size: 13px;
-    }
-
-/* Boxy white redesign */
-html, body, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
-    background-color: #FFFFFF;
+/* FoodRescue — Ocean Blue
+   A calm, readable theme with a persistent desktop sidebar.
+   All functional behavior remains in Python. */
+:root {
+    --ocean: #557C8B;
+    --deep: #244A5B;
+    --ink: #202B30;
+    --muted: #5F6C72;
+    --line: #E1E8EB;
+    --mist: #F1F6F8;
+    --white: #FFFFFF;
 }
+
+/* Base */
+html, body, [data-testid="stApp"], [data-testid="stMain"] {
+    background: var(--white) !important;
+    color: var(--ink) !important;
+}
+html, body, p, h1, h2, h3, button, input, textarea, label,
+[data-testid="stApp"] {
+    font-family: Arial, Helvetica, sans-serif !important;
+}
+[data-testid="stHeader"] {
+    background: var(--ocean) !important;
+}
+[data-testid="stMainBlockContainer"] {
+    max-width: 1180px !important;
+    padding-top: 2.25rem !important;
+    padding-bottom: 2rem !important;
+}
+h1, h2, h3 {
+    color: var(--ink) !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.025em !important;
+}
+h1 { font-size: clamp(2rem, 3.5vw, 3rem) !important; }
+h2 { font-size: 1.55rem !important; }
+p, [data-testid="stCaptionContainer"] { color: var(--muted); }
+
+/* Sidebar remains visible by default on desktop.
+   Streamlit's built-in toggle is retained for accessibility. */
 [data-testid="stSidebar"] {
-    background-color: #F7F9F6;
-    border-right: 1px solid #D3DFC9;
+    background: #F9FBFC !important;
+    border-right: 1px solid var(--line) !important;
 }
-.hero-card { border-radius: 8px; }
-.feature-card, .listing-card, .info-card,
-div[data-testid="stMetric"] {
-    border-radius: 6px;
-}
-.stButton > button, .stFormSubmitButton > button,
-.stTextInput input, .stTextArea textarea,
-.stNumberInput input, div[data-baseweb="select"] {
-    border-radius: 6px !important;
-}
-/* Mission-led landing page and shared top-right account action */
-.stApp { background-color: #FFFFFF !important; }
-[data-testid="stAppViewContainer"] { background: #FFFFFF !important; }
-.eyebrow { letter-spacing: 0.2em; font-size: 12px; font-weight: 700; color: #526B51; margin-bottom: 8px; }
-.mission-copy h1 { font-size: clamp(34px, 4vw, 60px); line-height: 1.12; margin-bottom: 24px; }
-.mission-copy p { font-size: 18px; line-height: 1.7; max-width: 640px; }
-[data-testid="stImage"] img { border-radius: 6px; object-fit: cover; }
-.stButton > button[kind="primary"] {
-    background-color: #285A37 !important;
-    color: #FFFFFF !important;
-    border-color: #285A37 !important;
-    border-radius: 5px !important;
+[data-testid="stSidebar"] > div { background: #F9FBFC !important; }
+[data-testid="stSidebar"] h3 {
+    font-size: 1.23rem !important;
     font-weight: 700 !important;
 }
-.stButton > button[kind="primary"] * { color: #FFFFFF !important; }
-.stButton > button[kind="primary"]:hover { background-color: #1D4329 !important; color: #FFFFFF !important; }
+[data-testid="stSidebar"] hr { border-color: var(--line) !important; }
+[data-testid="stSidebar"] .stButton { margin-bottom: 0.15rem; }
 
-/* October polish: compact typography and aligned layout */
-[data-testid="stMainBlockContainer"], .block-container {
-    max-width: 1180px !important;
-    padding-top: 2.1rem !important;
-    padding-bottom: 3rem !important;
+/* Buttons: visible text and consistent contrast in both states. */
+.stButton > button, .stFormSubmitButton > button {
+    border-radius: 6px !important;
+    box-shadow: none !important;
+    font-weight: 600 !important;
+    transition: background-color .15s ease, border-color .15s ease !important;
 }
-[data-testid="stHeader"] { background: #FFFFFF !important; }
-.mission-copy h1 { font-size: clamp(2.25rem, 3.2vw, 3.15rem) !important; line-height: 1.17 !important; letter-spacing: -.035em; margin: 0 0 1.1rem !important; }
-.mission-copy p { font-size: 1.04rem !important; line-height: 1.65 !important; margin: 0 0 .9rem !important; }
-.eyebrow { margin: 0 0 .7rem !important; }
-.feature-card { padding: 22px !important; min-height: 165px !important; }
-.feature-card h3 { font-size: 1.12rem !important; }
-.feature-card p { font-size: .95rem !important; }
-[data-testid="stSidebar"] { width: 260px !important; min-width: 260px !important; background: #FFFFFF !important; }
-[data-testid="stSidebarUserContent"] { padding: 1.5rem 1rem !important; }
-[data-testid="stSidebar"] h1 { font-size: 1.55rem !important; }
-[data-testid="stSidebar"] p { font-size: .95rem !important; }
-[data-testid="stSidebar"] hr { margin: .8rem 0 !important; }
-@media(max-width: 700px) {
-    [data-testid="stMainBlockContainer"], .block-container { padding: 1.5rem 1rem !important; }
-    .mission-copy h1 { font-size: 2.15rem !important; }
+button[kind="primary"], [data-testid="stFormSubmitButton"] button {
+    background: var(--deep) !important;
+    color: var(--white) !important;
+    border: 1px solid var(--deep) !important;
 }
+button[kind="primary"] p, [data-testid="stFormSubmitButton"] button p {
+    color: var(--white) !important;
+}
+button[kind="primary"]:hover, [data-testid="stFormSubmitButton"] button:hover {
+    background: #356477 !important;
+    border-color: #356477 !important;
+    color: var(--white) !important;
+}
+button[kind="secondary"] {
+    background: var(--white) !important;
+    color: var(--deep) !important;
+    border: 1px solid #C8D8DF !important;
+}
+button[kind="secondary"] p { color: var(--deep) !important; }
+button[kind="secondary"]:hover {
+    background: var(--mist) !important;
+    color: var(--deep) !important;
+    border-color: #AFC7D0 !important;
+}
+button[kind="secondary"]:hover p { color: var(--deep) !important; }
 
-/* Sidebar hamburger: hide Streamlit's arrows without disabling the real toggle.
-   This targets both newer and older Streamlit sidebar controls. */
-:is([data-testid="stSidebarCollapsedControl"], [data-testid="stSidebarCollapseButton"]) :is(button, [role="button"]) {
-  position: relative !important;
-  min-width: 42px !important;
-  min-height: 42px !important;
-  font-size: 0 !important;
+/* Account button is a light, readable control. */
+.st-key-header_signup button, .st-key-header_logout button {
+    background: var(--white) !important;
+    color: var(--deep) !important;
+    border: 1px solid var(--line) !important;
 }
-:is([data-testid="stSidebarCollapsedControl"], [data-testid="stSidebarCollapseButton"]) :is(button, [role="button"]) > * {
-  visibility: hidden !important;
+.st-key-header_signup button p, .st-key-header_logout button p {
+    color: var(--deep) !important;
 }
-:is([data-testid="stSidebarCollapsedControl"], [data-testid="stSidebarCollapseButton"]) :is(button, [role="button"])::after {
-  content: "" !important;
-  display: block !important;
-  visibility: visible !important;
-  position: absolute !important;
-  width: 23px !important;
-  height: 18px !important;
-  left: 50% !important;
-  top: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  background: linear-gradient(to bottom,
-    #263D2A 0 3px, transparent 3px 8px,
-    #263D2A 8px 11px, transparent 11px 15px,
-    #263D2A 15px 18px) !important;
-  pointer-events: none !important;
-}
-/* Hide the double-arrow Material Icon */
-[data-testid="stSidebarCollapsedControl"]
-[data-testid="stIconMaterial"] {
-    font-size: 0 !important;
+.st-key-header_signup button:hover, .st-key-header_logout button:hover {
+    background: var(--mist) !important;
 }
 
-/* Replace it with three horizontal lines */
-[data-testid="stSidebarCollapsedControl"]
-[data-testid="stIconMaterial"]::after {
-    content: "☰" !important;
-    font-family: Arial, sans-serif !important;
-    font-size: 26px !important;
-    font-weight: normal !important;
-    color: #263D2A !important;
-    display: inline-block !important;
+/* Homepage */
+.brand-line {
+    color: var(--deep);
+    font-size: .95rem;
+    font-weight: 700;
+    padding: .5rem 0;
+}
+.brand-line span {
+    color: var(--muted);
+    font-size: .82rem;
+    font-weight: 400;
+}
+.eyebrow, .hero-eyebrow, .section-eyebrow {
+    color: var(--ocean) !important;
+    font-size: .76rem;
+    font-weight: 700;
+    letter-spacing: .15em;
+}
+.hero-copy h1 {
+    font-size: clamp(2.5rem, 4vw, 3.6rem) !important;
+    line-height: 1.12;
+    margin: .5rem 0 1rem;
+}
+.hero-description {
+    color: #46575F;
+    font-size: 1.04rem;
+    line-height: 1.7;
+    max-width: 38rem;
+}
+.hero-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .6rem;
+    margin: 1.2rem 0;
+}
+.hero-pills span {
+    background: var(--mist);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--deep);
+    font-size: .83rem;
+    font-weight: 600;
+    padding: .4rem .8rem;
+}
+.section-heading {
+    margin: 3rem auto 1.5rem;
+    max-width: 45rem;
+    text-align: center;
+}
+.section-heading h2 {
+    font-size: clamp(1.7rem, 3vw, 2.35rem) !important;
+    margin: .45rem 0;
+}
+.section-heading > p:last-child {
+    line-height: 1.6;
+}
+.how-it-works-heading { margin-top: 3.5rem; }
+.card-number, .process-icon {
+    color: var(--ocean);
+    font-size: .85rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    margin-bottom: .8rem;
+}
+.feature-card, .process-card {
+    background: #F9FBFC;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    height: 100%;
+    min-height: 175px;
+    padding: 1.4rem;
+}
+.feature-card h3, .process-card h3 {
+    font-size: 1.12rem !important;
+    margin: 0 0 .6rem;
+}
+.feature-card p, .process-card p {
+    font-size: .95rem;
+    line-height: 1.65;
+}
+.closing-banner {
+    background: var(--mist);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    margin: 3rem 0 1rem;
+    padding: 2rem;
+    text-align: center;
+}
+.closing-banner h2 {
+    font-size: clamp(1.8rem, 3vw, 2.5rem) !important;
+    line-height: 1.2;
+    margin: .5rem 0;
+}
+.closing-banner p { line-height: 1.65; }
+[data-testid="stImage"] img { border-radius: 8px; }
+
+/* Forms and listing cards */
+[data-testid="stForm"] {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 1.3rem;
+}
+.listing-card {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 1.2rem 1.4rem;
+    margin: 1rem 0 .5rem;
+    background: var(--white);
+}
+.listing-card h3 { font-size: 1.2rem; margin: .35rem 0 .7rem; }
+.listing-card p { font-size: .93rem; margin: .25rem 0; }
+.status-badge {
+    display: inline-block;
+    background: var(--mist);
+    color: var(--deep);
+    font-size: .75rem;
+    border-radius: 4px;
+    padding: .22rem .5rem;
+}
+.site-footer {
+    border-top: 1px solid var(--line);
+    margin-top: 3.5rem;
+    padding-top: 1rem;
+    color: var(--muted);
+    font-size: .8rem;
+}
+
+/* Smaller screens: let Streamlit handle the sidebar responsively. */
+@media (max-width: 760px) {
+    [data-testid="stMainBlockContainer"] {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+    .hero-copy h1 { font-size: 2.25rem !important; }
+    .feature-card, .process-card { min-height: 0; }
+    .closing-banner { padding: 1.4rem; }
 }

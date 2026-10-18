@@ -1,26 +1,38 @@
-# FoodRescue — polished Streamlit prototype
+# FoodRescue
 
-## Start
-From the project folder:
+A student-built Streamlit app that helps local food businesses share surplus food with community organizations.
 
-```bash
-python3 -m pip install -r requirements.txt
-python3 -m streamlit run app.py
-```
+## Run locally
 
-## What changed
-- Replaced sidebar radio (which shared the `current_page` widget key) with buttons. Navigation now uses a separate session key and no longer triggers the StreamlitAPIException.
-- Removed conflicting hamburger CSS. The native Streamlit sidebar toggle stays accessible; its exact icon is Streamlit-version-dependent.
-- Unified white-and-forest-green styling, cards, typography, header, and mobile spacing.
-- Wired signup, login, logout, and role-specific pages.
-- Updated theme to white to avoid yellow flash/background.
-- Excluded private/local database and environment files from Git.
+1. Open this folder in VS Code.
+2. In the terminal run `python3 -m pip install -r requirements.txt`.
+3. Run `python3 -m streamlit run app.py`.
+4. Create a **test donor** account to post food, then log out and create a **test community organization** account to claim it. Check **My Activity** to mark pickup complete.
 
-## Important limitations
-- Accounts are stored locally in `data/foodrescue.db`; this is **not** production-ready authentication. Use test credentials only. A production release needs secure hosting, persistent shared database, rate limiting, recovery, and robust session management.
-- Donation listings and claims are **session-only demo data**, not shared between visitors, even though accounts use SQLite.
-- The sidebar uses Streamlit's native toggle rather than a custom three-line icon to avoid fragile CSS and broken opening/closing.
-- The uploaded ZIP contained a local database; it has intentionally **not** been included in this package. Keep your existing database locally if you want to retain test accounts.
+## What works
 
-## Integrate into your existing Git project
-Back up your project. Copy the contents of this folder into the existing project directory, **not** the containing folder itself. Preserve your existing `.git` and any local database. Restart Streamlit, test navigation and authentication, then commit your code (never the database or secrets).
+- Registration, login, logout, and account types.
+- SQLite storage for accounts and donations (`data/foodrescue.db`, created automatically).
+- Donors can post and cancel their available donations.
+- Organizations can browse, search, filter, and claim available food.
+- Either side of a claimed donation can confirm completion.
+- The claim update is atomic, so two organizations cannot both claim the same listing.
+
+## Important prototype limits
+
+- No email verification, password reset, account recovery, or pickup messaging.
+- Pickup details are entered by donors and coordination happens outside the app.
+- Accounts use PBKDF2 password hashing but this is not audited production authentication. Avoid real personal information.
+- SQLite persistence works on your local machine. Many free/cloud Streamlit hosts have **ephemeral disks**; use a hosted database for real deployment.
+- The app does not determine whether food is safe to distribute. Donors and receivers must follow food-safety guidance.
+- AI is intentionally not enabled and **no API key is included**. An AI assistant can be added later without changing the core workflow.
+
+## Project organization
+
+`app.py` handles page routing; `views/` holds each page; `data/database.py` contains SQL and account logic; `components/` contains shared UI; `styles/main.css` contains the theme.
+
+Never commit `.streamlit/secrets.toml`, `.env`, or database files. If a key has been exposed, revoke it and use a new one.
+
+
+## Design update
+The Ocean Blue theme uses a blue-gray header, navy buttons, white background, and a pale sidebar. On desktop the sidebar opens expanded by default. You can still collapse it with Streamlit's native control. No account, database, or donation logic was changed in this update.
