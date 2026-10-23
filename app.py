@@ -1,5 +1,6 @@
 
 from pathlib import Path
+import base64
 
 import streamlit as st
 
@@ -13,7 +14,7 @@ from views import activity, donate, find_food, home, signup, demo
 
 st.set_page_config(
     page_title="FoodRescue",
-    page_icon="🍎",
+    page_icon=str(Path(__file__).parent / "assets" / "foodrescue_icon.png"),
     layout="wide",
     initial_sidebar_state="collapsed",
 )
@@ -42,7 +43,9 @@ header = st.container(key="site_navigation")
 with header:
     brand, *nav_columns = st.columns([2.0, 0.8, 1, 1, 1, 1.1, 0.9], gap="small", vertical_alignment="center")
     with brand:
-        st.markdown('<div class="fr-brand">🌿 FoodRescue<small>Good food. Better communities.</small></div>', unsafe_allow_html=True)
+        logo_bytes = (Path(__file__).parent / "assets" / "foodrescue_logo.png").read_bytes()
+        logo_data = base64.b64encode(logo_bytes).decode("ascii")
+        st.markdown(f'<div class="fr-brand"><img src="data:image/png;base64,{logo_data}" alt="FoodRescue — Good Food. Greater Impact"></div>', unsafe_allow_html=True)
     for column, destination in zip(nav_columns, nav_items):
         with column:
             if st.button(destination, key=f"top_{destination}", use_container_width=True,

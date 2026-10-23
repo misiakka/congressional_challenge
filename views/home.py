@@ -1,5 +1,7 @@
 """Homepage: mission, workflow, and paths into the working demo."""
 import streamlit as st
+from pathlib import Path
+import base64
 from components.navigation import go_to
 
 
@@ -9,6 +11,9 @@ def start_demo(role):
 
 
 def render():
+    logo = Path(__file__).resolve().parents[1] / "assets" / "foodrescue_logo.png"
+    logo_data = base64.b64encode(logo.read_bytes()).decode("ascii")
+    st.markdown(f'<div class="fr-home-logo"><img src="data:image/png;base64,{logo_data}" alt="FoodRescue official logo"></div>', unsafe_allow_html=True)
     st.markdown("""
     <section class="fr-hero">
       <div class="fr-hero-content">
