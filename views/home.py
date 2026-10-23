@@ -1,188 +1,54 @@
-"""A mission-led introduction to FoodRescue."""
+"""Homepage: mission, workflow, and paths into the working demo."""
 import streamlit as st
 from components.navigation import go_to
 
 
+def start_demo(role):
+    st.session_state.demo_role = role
+    go_to("Demo Studio")
+
+
 def render():
-    left, right = st.columns([1.1, 0.9], gap="large", vertical_alignment="center")
-
-    with left:
-        st.markdown(
-            """
-            <div class="hero-copy">
-                <p class="hero-eyebrow">LESS WASTE. MORE GOOD.</p>
-                <h1>Good food deserves a second chance.</h1>
-                <p class="hero-description">
-                    FoodRescue connects businesses with surplus food to food
-                    banks and community organizations, helping good food reach
-                    the people who need it.
-                </p>
-                <div class="hero-pills">
-                    <span>Reduce food waste</span>
-                    <span>Support communities</span>
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-        if not st.session_state.user:
-            if st.button(
-                "Join FoodRescue →",
-                key="mission_signup",
-                type="primary",
-            ):
-                go_to("Account")
-        else:
-            st.success("Welcome to the FoodRescue community!")
-
-    with right:
-        st.image(
-            "assets/food_rescue_produce.png",
-            use_container_width=True,
-        )
-
-    st.markdown(
-        """
-        <div class="section-heading">
-            <p class="section-eyebrow">WHY FOODRESCUE</p>
-            <h2>Small actions. Meaningful change.</h2>
-            <p>
-                Together, we can make surplus food a resource instead of waste.
-            </p>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-    first, second, third = st.columns(3, gap="medium")
-
-    with first:
-        st.markdown(
-            """
-            <div class="feature-card">
-                <div class="card-number">01</div>
-                <h3>Keep good food in use</h3>
-                <p>
-                    Help prevent edible surplus food from going to waste
-                    by connecting it with organizations that can use it.
-                </p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    with second:
-        st.markdown(
-            """
-            <div class="feature-card">
-                <div class="card-number">02</div>
-                <h3>Support local communities</h3>
-                <p>
-                    Help food banks and community organizations access
-                    donations for the people they serve.
-                </p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    with third:
-        st.markdown(
-            """
-            <div class="feature-card">
-                <div class="card-number">03</div>
-                <h3>Make sharing simpler</h3>
-                <p>
-                    Bring donors and food-rescue organizations together
-                    in one place to coordinate available food.
-                </p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    st.markdown(
-        """
-        <div class="section-heading how-it-works-heading">
-            <p class="section-eyebrow">HOW IT WORKS</p>
-            <h2>From surplus to shared.</h2>
-            <p>A simple process that helps good food find a destination.</p>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-    step1, step2, step3 = st.columns(3, gap="medium")
-
-    with step1:
-        st.markdown(
-            """
-            <div class="process-card">
-                <div class="process-icon">01</div>
-                <h3>Businesses list food</h3>
-                <p>
-                    Businesses share details about suitable surplus food
-                    available for donation.
-                </p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    with step2:
-        st.markdown(
-            """
-            <div class="process-card">
-                <div class="process-icon">02</div>
-                <h3>Organizations find it</h3>
-                <p>
-                    Food banks and community organizations browse
-                    available listings and claim donations.
-                </p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    with step3:
-        st.markdown(
-            """
-            <div class="process-card">
-                <div class="process-icon">03</div>
-                <h3>Food reaches people</h3>
-                <p>
-                    Donors and recipient organizations coordinate pickup
-                    so donations can be put to good use.
-                </p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    st.markdown(
-        """
-        <div class="closing-banner">
-            <p class="section-eyebrow">BE PART OF THE CHANGE</p>
-            <h2>Let's give good food<br>a second chance.</h2>
-            <p>
-                Join a community working toward less food waste
-                and stronger local food networks.
-            </p>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-    if not st.session_state.user:
-        if st.button(
-            "Get Started →",
-            key="closing_signup",
-            type="primary",
-        ):
+    st.markdown("""
+    <section class="fr-hero">
+      <div class="fr-hero-content">
+        <div class="fr-kicker">LESS WASTE · MORE GOOD</div>
+        <h1>Good Food<br>Shouldn't Go to Waste.</h1>
+        <p>FoodRescue is designed to connect local businesses with food banks, making it easier to share surplus food and support our communities.</p>
+        <div class="fr-hero-benefits"><span>🌱 Reduce waste</span><span>♡ Support communities</span><span>⌂ Connect locally</span></div>
+      </div>
+    </section>
+    """, unsafe_allow_html=True)
+    a,b,c = st.columns([1,1,3])
+    with a:
+        if st.button("Get Started →", key="start_home", type="primary", use_container_width=True):
             go_to("Account")
+    with b:
+        if st.button("Try Demo →", key="try_home", use_container_width=True):
+            start_demo("Business")
 
-    st.caption(
-        "FoodRescue is a demonstration prototype. "
-        "Donation availability and pickup arrangements depend on participating organizations."
-    )
+    st.markdown('<div class="fr-section"><small>THE PROCESS</small><h2>How FoodRescue Works</h2><p>A simple way to connect surplus food with local food banks.</p></div>', unsafe_allow_html=True)
+    steps = [
+        ("01", "Businesses post donations", "Local businesses list surplus food they would otherwise waste."),
+        ("02", "Food banks browse & request", "Food banks discover available food and request what they need."),
+        ("03", "Coordinate pickup", "The business and food bank can arrange a pickup."),
+    ]
+    for col, (number,title,desc) in zip(st.columns(3),steps):
+        with col:
+            st.markdown(f'<div class="fr-step"><div class="fr-number">{number}</div><h3>{title}</h3><p>{desc}</p></div>', unsafe_allow_html=True)
+
+    st.markdown('<div class="fr-section"><small>EXPLORE THE POSSIBILITIES</small><h2>Food that could be shared</h2><p>Illustrative categories, not actual donations.</p></div>', unsafe_allow_html=True)
+    foods=[("🥖","Bakery","Bread & pastries"),("🥬","Produce","Fresh vegetables"),("🥛","Dairy","Dairy products"),("🥗","Prepared food","Prepared meals")]
+    for col,(emoji,category,name) in zip(st.columns(4),foods):
+        with col:
+            st.markdown(f'<div class="fr-food"><div class="fr-emoji">{emoji}</div><small>{category}</small><h3>{name}</h3><p>Example food category</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="fr-section"><small>INTERACTIVE WALKTHROUGH</small><h2>One platform. Two perspectives.</h2><p>Try both sides of the app using fictional demonstration listings.</p></div>', unsafe_allow_html=True)
+    business,bank=st.columns(2)
+    with business:
+        st.markdown('<div class="fr-role"><h3>🏪 Business perspective</h3><p>Create listings and manage incoming requests.</p></div>',unsafe_allow_html=True)
+        if st.button("View as Business →",use_container_width=True,key="role_biz"):start_demo("Business")
+    with bank:
+        st.markdown('<div class="fr-role"><h3>♡ Food bank perspective</h3><p>Browse available listings and request food.</p></div>',unsafe_allow_html=True)
+        if st.button("View as Food Bank →",use_container_width=True,key="role_bank"):start_demo("Food Bank")
+    st.markdown('<div class="fr-mission"><small>OUR MISSION</small><h2>Less food waste. Stronger communities.</h2><p>We are building FoodRescue to help local organizations connect surplus food with people who need it.</p></div>',unsafe_allow_html=True)
+    st.caption("Prototype notice: no food distribution is claimed. All demonstration listings and actions are fictional.")

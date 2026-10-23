@@ -1,7 +1,7 @@
 """One navigation state, shared by the sidebar and every page button."""
 import streamlit as st
 
-PAGES = ('Home', 'Donate Food', 'Find Food', 'My Activity', 'Account')
+PAGES = ('Home', 'Donate Food', 'Find Food', 'My Activity', 'Demo Studio', 'Account')
 
 
 def go_to(page):
